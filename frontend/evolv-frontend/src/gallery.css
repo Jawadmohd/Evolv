@@ -1,0 +1,46 @@
+.gallery-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  text-align: center;
+}
+.gallery-grid {
+  margin-left: 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s;
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+.download-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+.download-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+@media(max-width : 768px) {
+  .gallery-grid {
+    margin-left: auto;
+  }
+}

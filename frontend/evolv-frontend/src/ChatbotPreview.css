@@ -1,0 +1,15 @@
+.chatbot-preview-box {
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.chatbot-preview-box:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.chat-preview {
+  margin-top: 0.5rem;
+  color: #555;
+}
+.chat-preview.loading {
+  font-style: italic;
+}

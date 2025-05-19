@@ -1,0 +1,71 @@
+:root {
+  --text: #333;
+  --primary: #5c6ac4;
+}
+
+/* Heading */
+.video-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text);
+}
+
+/* Grid: always 2 columns on desktop, 1 on mobile */
+.video-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2rem;                  /* hide any horizontal scrollbar */
+  margin-bottom: 3rem;
+}
+
+/* Card styling */
+.video-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.video-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Thumbnail */
+.video-thumbnail {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Title */
+.video-title {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+  min-height: 3rem;
+}
+
+/* Today's goal box */
+.todays-goal {
+  padding: 2rem;
+  text-align: center;
+  background: #f1f5f9;
+}
+.todays-goal h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  .video-thumbnail {
+    max-height: 150px;
+  }
+}

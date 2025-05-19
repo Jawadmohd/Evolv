@@ -1,0 +1,48 @@
+.quiz-box {
+  padding: 2rem;
+  text-align: center;
+}
+
+.progress {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+.options-container {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.option-button {
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover {
+  border-color: var(--primary);
+}
+
+.option-button.selected {
+  border-color: var(--primary);
+  background-color: #eff6ff;
+}
+
+.result-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.result-container h2 {
+  margin-bottom: 1.5rem;
+}
+
+.result-container p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}

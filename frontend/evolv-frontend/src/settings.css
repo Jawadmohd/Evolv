@@ -1,0 +1,121 @@
+/* Settings.css */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f7fa;
+  --accent-color: #525f7f;
+  --error-color: #e74c3c;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.settings-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: var(--secondary-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  font-family: var(--font-family);
+}
+
+.settings-container h1 {
+  text-align: center;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+section h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  flex: 1 1 200px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  transition: border var(--transition-speed);
+}
+
+form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+}
+
+form button {
+  padding: 0.6rem 1.2rem;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition-speed);
+}
+
+form button:hover {
+  background: #357ABD;
+}
+
+.interests-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.interests-list li {
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.delete-btn {
+  background: var(--error-color);
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition-speed);
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+@media (max-width: 600px) {
+  .settings-container {
+    padding: 0.5rem;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  form input, form button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,140 @@
+/* Root Styling */
+.chat-container {
+  max-width: 800px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+/* Header */
+.chat-header {
+  background-color: #6366f1;
+  color: white;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Messages Area */
+.chat-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Message Bubbles */
+.chat-message {
+  display: flex;
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.bot {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  line-height: 1.4;
+  background-color: #e0e7ff;
+  color: #1e293b;
+  transition: all 0.3s ease-in-out;
+}
+
+.chat-message.user .message-bubble {
+  background-color: #6366f1;
+  color: white;
+}
+
+/* Chat Input Area */
+.chat-input {
+  display: flex;
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.chat-input input:focus {
+  border-color: #6366f1;
+}
+
+.send-button {
+  margin-left: 0.75rem;
+  background-color: #6366f1;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.send-button:hover {
+  background-color: #4f46e5;
+}
+
+.send-button:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* Spinner (Loading Message) */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .chat-container {
+    border-radius: 0;
+    height: 100vh;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  .chat-header {
+    font-size: 1.25rem;
+    padding: 1rem;
+  }
+}

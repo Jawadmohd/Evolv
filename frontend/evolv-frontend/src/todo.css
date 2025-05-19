@@ -1,0 +1,83 @@
+.task-list {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.task-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.task-type {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.task-type.onetime {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+.task-type.permanent {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.task-form {
+  padding: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+}
+
+.empty-state,
+.loading-text {
+  text-align: center;
+  color: var(--text-light);
+  padding: 2rem;
+}
+
+.error-message {
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}

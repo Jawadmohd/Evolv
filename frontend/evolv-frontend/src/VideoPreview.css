@@ -1,0 +1,68 @@
+/* VideoPreview.css */
+
+/* 1. Container scrolls horizontally */
+.video-grid-container {
+  width: 100%;
+  padding: 1rem 0;
+  overflow-x: auto;                     /* allow horizontal scroll */
+  -webkit-overflow-scrolling: touch;    /* smooth scroll on iOS */
+}
+
+/* 2. Single-row flex layout */
+.video-grid {
+  display: flex;
+  flex-wrap: nowrap;                    /* force one row */
+  gap: 1.5rem;
+  padding-bottom: 1rem;                 /* space under cards */
+  margin: 0 1rem;                       /* side insets so cards don’t butt up at edges */
+}
+
+/* 3. Fixed-width cards */
+.video-card {
+  flex: 0 0 280px;                      /* fixed 280px width */
+  max-width: 280px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.video-card:hover {
+  transform: translateY(-2px);
+}
+
+/* 4. Thumbnail & content */
+.video-thumbnail {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+.video-content {
+  padding: 1rem;
+}
+.video-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;                /* clamp to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.video-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* 5. Optional: slim custom scrollbar */
+.video-grid-container::-webkit-scrollbar {
+  height: 6px;
+}
+.video-grid-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
