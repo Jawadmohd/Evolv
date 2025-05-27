@@ -144,61 +144,6 @@ html, body {
   background-color: var(--primary-dark);
 }
 
-
-
-
-
-/* homepage.css */
-.dashboard-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.welcome-back {
-  font-size: 2rem;
-  color: var(--text);
-  margin-bottom: 0.5rem;
-}
-
-.quote-widget {
-  font-style: italic;
-  color: var(--text-light);
-  padding: 1.5rem;
-  margin: 0 auto 2rem;
-  max-width: 600px;
-}
-
-.dashboard-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.todo-card { border-left: 4px solid #10b981; }
-.quiz-card { border-left: 4px solid #3b82f6; }
-.chatbot-card { border-left: 4px solid #8b5cf6; }
-.video-card { border-left: 4px solid #ef4444; }
-
-.card h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-}
-
-.card-link {
-  display: inline-block;
-  margin-top: 1rem;
-  color: var(--primary);
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.card-link:hover {
-  text-decoration: underline;
-}
-
 @media (max-width: 768px) {
 
    .sidebar.open ~ .main-content {

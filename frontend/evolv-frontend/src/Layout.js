@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
+import './index.css';
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);

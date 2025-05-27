@@ -1,4 +1,4 @@
-/* Dashboard Header */
+/* ===== Dashboard Header ===== */
 .dashboard-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -16,29 +16,79 @@
   padding: 1.5rem;
   margin: 0 auto 2rem;
   max-width: 600px;
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  box-shadow: var(--card-shadow);
 }
 
-/* GRID: enforce a larger minimum card width */
+/* ===== Main Grid ===== */
 .dashboard-grid {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 }
 
-.video-section {
-  grid-column: 1 / -1;   /* span from first to last column */
-  padding: 0;            /* let inner component handle its own padding */
+/* ===== Chart Card ===== */
+.chart-card {
+  grid-column: 1 / -1;          /* span full width */
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  box-shadow: var(--card-shadow);
+  text-align: center;
 }
-/* Card headings */
+
+.chart-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+.kpi {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* ===== Subgrid for Tasks + Quiz ===== */
+.dashboard-subgrid {
+  grid-column: 1 / -1;          /* span full width */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* equal halves */
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* ===== Video Section ===== */
+.video-section {
+  grid-column: 1 / -1;
+  padding: 0;
+}
+
+/* ===== Card Base Styles ===== */
+.card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .card h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
   font-size: 1.25rem;
+  color: var(--text);
 }
 
-/* Links */
+/* ===== Links ===== */
 .card-link {
   display: inline-block;
   margin-top: 1rem;
@@ -46,11 +96,12 @@
   font-weight: 500;
   text-decoration: none;
 }
+
 .card-link:hover {
   text-decoration: underline;
 }
 
-/* VIDEO PREVIEW (make thumbnails 16:9, clamp titles) */
+/* ===== Video Preview Styling ===== */
 .video-preview img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -69,4 +120,28 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: calc(1.4em * 2);
+  color: var(--text);
+}
+
+/* ===== Floating Chat Button ===== */
+.chat-button {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-button:hover {
+  opacity: 0.9;
 }

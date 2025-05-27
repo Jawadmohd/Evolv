@@ -1,0 +1,148 @@
+/* src/challenge.css */
+
+/* Container */
+.challenge-wrapper {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Card Base */
+.challenge-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);           /* use accent for default border */
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);     /* soften the shadow */
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;                           /* add generous padding */
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+}
+
+/* Hover & Active States */
+.challenge-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-hover);
+}
+.challenge-card.active {
+  border-color: var(--primary);              /* highlight active with primary color */
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.card-header .user {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.card-header .status {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Body */
+.card-body {
+  margin-bottom: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem;
+  color: var(--text-color);
+}
+
+.card-duration {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Footer */
+.card-footer {
+  text-align: right;
+}
+
+.card-footer button {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.card-footer button:hover {
+  color: var(--accent-hover);
+}
+
+/* Start / Submit Buttons */
+.start-btn,
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 1rem 0 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.start-btn {
+  background: var(--primary);
+  color: #fff;
+}
+
+.start-btn:not(:disabled):hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.start-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.submit-btn {
+  background: var(--accent);
+  color: #fff;
+}
+
+.submit-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Form */
+.challenge-form {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 1rem;
+}
+
+.challenge-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+}
+
+.challenge-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+}

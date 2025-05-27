@@ -1,13 +1,177 @@
+/* ─── 1) Reset & fonts ─── */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+               'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+               'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: var(--bg-page);
+  color:    var(--text-color);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* ─── 2) Light (default) theme variables ─── */
+:root {
+  /* page colors */
+  --bg-page:        #f9fafb;
+  --text-color:     #333333;
+
+  /* nav/sidebar */
+  --sidebar-bg:     #ffffff;
+  --nav-text:       #374151;
+  --nav-active:     #3b82f6;
+
+  /* cards/buttons */
+  --card-bg:        #ffffff;
+  --card-shadow:    rgba(0,0,0,0.04);
+
+  /* actions */
+  --primary:        #3b82f6;
+  --primary-hover:  #2563eb;
+  --accent:         #10b981;
+  --accent-hover:   #059669;
+
+  /* custom additions */
+  --blue-green:     #9df9ef; /* your new “Blue Green” */
+  --dusty-white:    #edf7f6; /* your new “Dusty White” */
+
+  --border-radius:  8px;
+}
+
+/* ─── 3) Challenge mode palette ─── */
+body.theme-active {
+  /* base challenge colors */
+  --cream-light:    var(--dusty-white);
+  --mint-green:     var(--blue-green);
+  --mint-hover:     #70C9B9; /* slightly darker for hover states */
+
+  /* apply them */
+  --bg-page:        var(--cream-light);
+  --sidebar-bg:     #8ef1e5;
+  --card-bg:        #ffffff;
+  --card-shadow:    rgba(0,0,0,0.1);
+
+  --primary:        var(--mint-green);
+  --primary-hover:  var(--mint-hover);
+
+  --accent:         var(--mint-green);
+  --accent-hover:   var(--mint-hover);
+
+  /* text/navigation stays dark for contrast */
+  --text-color:   black;
+  --nav-text:   #ffffff;
+  --nav-active:  #ffffff;
+}
+
+/* ─── 4) Layout utilities ─── */
+.app {
+  display: flex;
+}
+.sidebar {
+  width: 240px;
+  background: var(--sidebar-bg);
+  padding: 1rem;
+}
+.nav-link {
+  display: block;
+  margin: 0.5rem 0;
+  color: var(--nav-text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link.active {
+  color: var(--nav-active);
+  font-weight: 600;
+}
+.nav-link.logout {
+  margin-top: 2rem;
+  color: #ef4444;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+  background: var(--bg-page);
+  min-height: 100vh;
+}
+
+/* ─── 5) Cards & Buttons ─── */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px var(--card-shadow);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-accent:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── 6) Form elements ─── */
+input, textarea, select {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* ─── 7) Link styling ─── */
+a {
+  color: var(--primary);
+  text-decoration: none !important;
+}
+a:hover {
+  text-decoration: underline;
+}
+body.theme-active .sidebar h2 {
+  color: var(--nav-text) !important;
+}
+
+body.theme-active .sidebar .menu-link {
+  font-weight: 700 !important;
+  font-size: large;
+  color:#ffffff !important;
+}
+body.theme-active .menu-link:hover{
+  background-color: cadetblue;
+}
+body.theme-active .logout-btn:hover {
+  background-color: rgb(255, 192, 192);
+}
+body.theme-active .chat-button {
+  color: rgb(0, 0, 0);
 }

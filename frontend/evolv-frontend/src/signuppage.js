@@ -11,12 +11,13 @@ function SignupPage() {
     lastname: '',
     username: '',
     profession: '',
+    interest: '',
     dob: '',
     password: '',
     confirmPassword: '',
   });
 
-  const professions = ['Developer', 'Designer', 'Lawyer', 'Student','Doctor'];
+  const professions = ['Developer', 'Designer', 'Lawyer', 'Student', 'Doctor'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,16 +46,38 @@ function SignupPage() {
       return;
     }
 
+    // Prepare data for signup API, excluding 'interest'
+    const signupData = { ...formData };
+    delete signupData.interest;
+    delete signupData.confirmPassword;
+
     try {
+      // First: signup user (without interest)
       const res = await fetch('http://localhost:8080/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(signupData),
       });
 
       const data = await res.text();
       if (data === 'signup successful') {
-        navigate('/home');
+        // Second: separately add interest if available
+        if (formData.interest) {
+          // Optional: allow multiple interests (comma-separated)
+          const interests = formData.interest.split(',').map((s) => s.trim());
+          for (const interest of interests) {
+            await fetch('http://localhost:8080/api/settings/interests', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                username: formData.username,
+                interest,
+              }),
+            });
+          }
+        }
+
+        navigate('/');
       } else {
         alert('Signup failed');
       }
@@ -129,6 +152,18 @@ function SignupPage() {
             </div>
 
             <div className="input-group">
+              <label className="input-label">Interests</label>
+              <input
+                type="text"
+                name="interest"
+                className="input-field"
+                placeholder="e.g. coding, music, sports"
+                value={formData.interest}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="input-group">
               <label className="input-label">Date of Birth</label>
               <input
                 type="date"
@@ -140,11 +175,7 @@ function SignupPage() {
               />
             </div>
 
-            <button
-              type="button"
-              onClick={nextStep}
-              className="submit-btn"
-            >
+            <button type="button" onClick={nextStep} className="submit-btn">
               Continue
             </button>
           </div>
@@ -178,18 +209,10 @@ function SignupPage() {
             </div>
 
             <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={prevStep}
-                className="back-btn"
-              >
+              <button type="button" onClick={prevStep} className="back-btn">
                 ← Back
               </button>
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="submit-btn"
-              >
+              <button type="button" onClick={handleSubmit} className="submit-btn">
                 Create Account
               </button>
             </div>

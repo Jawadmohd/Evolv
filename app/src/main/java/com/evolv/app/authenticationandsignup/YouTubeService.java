@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
+
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +25,8 @@ public class YouTubeService {
     private int currentKeyIndex = 0;
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    // Limit search to 2 results per interest
     private static final int MAX_RESULTS = 5;
     private static final int MAX_RETRIES = 3;
 
@@ -31,10 +37,12 @@ public class YouTubeService {
             try {
                 String currentKey = getNextApiKey();
                 String searchUrl = buildSearchUrl(interest, currentKey);
-                
-                ResponseEntity<JsonNode> searchResponse = restTemplate.getForEntity(searchUrl, JsonNode.class);
-                
-                if (searchResponse.getStatusCode() == HttpStatus.OK && searchResponse.getBody() != null) {
+
+                ResponseEntity<JsonNode> searchResponse =
+                    restTemplate.getForEntity(searchUrl, JsonNode.class);
+
+                if (searchResponse.getStatusCode() == HttpStatus.OK 
+                        && searchResponse.getBody() != null) {
                     return processResponse(searchResponse.getBody());
                 }
             } catch (HttpClientErrorException e) {
@@ -48,7 +56,7 @@ public class YouTubeService {
                 break;
             }
         }
-        return List.of(); // Return empty list on failure
+        return List.of(); // empty on failure
     }
 
     private String getNextApiKey() {
@@ -58,30 +66,49 @@ public class YouTubeService {
 
     private String buildSearchUrl(String interest, String apiKey) {
         return "https://www.googleapis.com/youtube/v3/search?" +
-               "part=snippet&maxResults=" + MAX_RESULTS +
-               "&q=" + interest +
-               "&type=video&videoDuration=medium" + // Filter out shorts
-               "&fields=items(id/videoId,snippet/title,snippet/thumbnails/high/url)" +
-               "&key=" + apiKey;
+            "part=snippet&maxResults=" + MAX_RESULTS +
+            "&q=" + UriUtils.encodeQueryParam(interest, StandardCharsets.UTF_8) +
+            "&type=video&videoDuration=medium" +
+            "&fields=items(id/videoId,snippet/title,snippet/thumbnails/high/url)" +
+            "&key=" + apiKey;
     }
 
     private List<Map<String, String>> processResponse(JsonNode body) {
         List<Map<String, String>> videos = new ArrayList<>();
         for (JsonNode item : body.get("items")) {
+            String title = item.get("snippet").get("title").asText();
+
+            // only ASCII (basic English letters, numbers, spaces, punctuation)
+            if (!title.matches("[\\p{ASCII} ]+")) {
+                continue;
+            }
+
             Map<String, String> video = new HashMap<>();
-            video.put("title", item.get("snippet").get("title").asText());
-            video.put("thumbnail", item.get("snippet").get("thumbnails").get("high").get("url").asText());
-            video.put("videoId", item.get("id").get("videoId").asText());
-            video.put("url", "https://www.youtube.com/watch?v=" + video.get("videoId"));
+            video.put("title", title);
+            video.put("thumbnail",
+                      item.get("snippet")
+                          .get("thumbnails")
+                          .get("high")
+                          .get("url")
+                          .asText());
+            String vidId = item.get("id").get("videoId").asText();
+            video.put("videoId", vidId);
+            video.put("url", "https://www.youtube.com/watch?v=" + vidId);
+
             videos.add(video);
+
+            // extra safety: stop if we've already got MAX_RESULTS after filtering
+            if (videos.size() >= MAX_RESULTS) {
+                break;
+            }
         }
         return videos;
     }
 
     private void handleApiError(HttpClientErrorException e) {
         if (e.getStatusCode() == HttpStatus.FORBIDDEN) {
-            System.err.println("YouTube API quota exceeded for key index: " + currentKeyIndex);
-            // Implement alerting mechanism here
+            System.err.println("YouTube API quota exceeded on key #" + currentKeyIndex);
+            // alerting, metrics, whatever
         }
     }
 }
