@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/tasks")
 public class TodoController {
@@ -51,37 +51,57 @@ public class TodoController {
         }
     }
 
+    /**
+     * DELETE /api/tasks/{id}?username=...&date=2025-06-03T10:18:35.147Z
+     *
+     * - `id` is the task ID (path variable).
+     * - `username` is required as a query parameter.
+     * - `date` is passed as an ISO-8601 string; we parse it into a Date internally.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTodo(@PathVariable String id,
-                                        @RequestParam String username) {
+    public ResponseEntity<?> deleteTodo(
+            @PathVariable String id,
+            @RequestParam String username,
+            @RequestParam String date   // now: receive ISO-8601 string, not a Date directly
+    ) {
         try {
+            // Parse the incoming ISO-8601 string into a java.util.Date
+            Date deletionDate;
+            try {
+                Instant inst = Instant.parse(date);
+                deletionDate = Date.from(inst);
+            } catch (Exception pe) {
+                return ResponseEntity.badRequest().body("Invalid date format. Please send ISO-8601 string.");
+            }
+
             Optional<Todo> opt = todoRepository.findByIdAndUsername(id, username);
             if (opt.isEmpty()) {
                 return ResponseEntity.status(404).body("Task not found");
             }
             Todo task = opt.get();
-            if (!"onetime".equals(task.getPeriod())) {
+            if (!"onetime".equalsIgnoreCase(task.getPeriod())) {
                 return ResponseEntity.badRequest().body("Cannot delete permanent tasks");
             }
 
             // 1) Remove the task
             todoRepository.deleteById(id);
 
-            // 2) Update or create the Count document
-            Count userCount = countRepository
+            // 2) Update or create the Count document, now adding the new deletion date
+            Count updatedCount = countRepository
                     .findByUsername(username)
                     .map(c -> {
-                        c.increment();
+                        c.addDeletionDate(deletionDate);
                         return countRepository.save(c);
                     })
                     .orElseGet(() -> {
-                        Count c = new Count(username, 1);
+                        Count c = new Count(username, deletionDate);
                         return countRepository.save(c);
                     });
 
             return ResponseEntity.ok(
-                String.format("Task deleted. %s has now deleted %d tasks.",
-                              username, userCount.getCount())
+                String.format("Task deleted. %s total deletions: %d.",
+                              username,
+                              updatedCount.getTotalCount())
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,26 +109,51 @@ public class TodoController {
         }
     }
 
-    // inside TodoController (or a new @RestController @RequestMapping("/api/count"))
-@GetMapping("/count")
-public ResponseEntity<?> getDeletionCount(@RequestParam String username) {
-    try {
-        // look up the Count document for this user
-        Optional<Count> optCount = countRepository.findByUsername(username);
-        int cnt = optCount.map(Count::getCount).orElse(0);
+    // Fetch deletion metrics for a user: total, last day, last week
+    @GetMapping("/count")
+    public ResponseEntity<?> getDeletionMetrics(@RequestParam String username) {
+        try {
+            Optional<Count> optCount = countRepository.findByUsername(username);
 
-        // return a small JSON payload
-        Map<String,Object> body = Map.of(
-            "username", username,
-            "count", cnt
-        );
-        return ResponseEntity.ok(body);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity
-               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .body("Error fetching deletion count");
+            int total = 0, lastDay = 0, lastWeek = 0;
+            if (optCount.isPresent()) {
+                List<Date> dates = optCount.get().getDeletionDates();
+                total = dates.size();
+
+                Date now = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(now);
+
+                // boundary for last 24 hours
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+                Date oneDayAgo = cal.getTime();
+
+                // boundary for last 7 days
+                cal.setTime(now);
+                cal.add(Calendar.DAY_OF_MONTH, -7);
+                Date oneWeekAgo = cal.getTime();
+
+                lastDay = (int) dates.stream()
+                        .filter(d -> d.after(oneDayAgo))
+                        .count();
+
+                lastWeek = (int) dates.stream()
+                        .filter(d -> d.after(oneWeekAgo))
+                        .count();
+            }
+
+            Map<String, Object> body = Map.of(
+                "username", username,
+                "totalDeletions", total,
+                "deletionsLastDay", lastDay,
+                "deletionsLastWeek", lastWeek
+            );
+            return ResponseEntity.ok(body);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body("Error fetching deletion metrics");
+        }
     }
-}
-
 }

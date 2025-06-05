@@ -2,19 +2,11 @@ package com.evolv.app.authenticationandsignup;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/settings")
 public class SettingsController {
@@ -22,15 +14,21 @@ public class SettingsController {
     private final UserRepository userRepository;
     private final VideoInterestRepository videoInterestRepository;
     private final ToDoRepository todoRepository;
+    private final CountRepository countRepository;
+    private final ChallengeRepository challengeRepository;  // Added ChallengeRepository
 
     public SettingsController(
             UserRepository userRepository,
             VideoInterestRepository videoInterestRepository,
-            ToDoRepository todoRepository
+            ToDoRepository todoRepository,
+            CountRepository countRepository,
+            ChallengeRepository challengeRepository  // Inject ChallengeRepository
     ) {
         this.userRepository = userRepository;
         this.videoInterestRepository = videoInterestRepository;
         this.todoRepository = todoRepository;
+        this.countRepository = countRepository;
+        this.challengeRepository = challengeRepository;  // Assign to field
     }
 
     // Get all interests for a user
@@ -53,7 +51,7 @@ public class SettingsController {
         return ResponseEntity.noContent().build();
     }
 
-    // Update username across User, VideoInterest, and Todo collections
+    // Update username across User, VideoInterest, Todo, Count, and Challenge collections
     @PutMapping("/username")
     public ResponseEntity<?> updateUsername(@RequestBody UsernameUpdateRequest req) {
         // Verify current credentials
@@ -77,15 +75,26 @@ public class SettingsController {
         user.setUsername(newUsername);
         userRepository.save(user);
 
-        // 2) Update VideoInterest docs
+        // 2) Update VideoInterest documents
         List<VideoInterest> interests = videoInterestRepository.findByUsername(oldUsername);
         interests.forEach(i -> i.setUsername(newUsername));
         videoInterestRepository.saveAll(interests);
 
-        // 3) Update Todo docs
+        // 3) Update Todo documents
         List<Todo> todos = todoRepository.findByUsername(oldUsername);
         todos.forEach(t -> t.setUsername(newUsername));
         todoRepository.saveAll(todos);
+
+        // 4) Update Count document
+        countRepository.findByUsername(oldUsername).ifPresent(count -> {
+            count.setUsername(newUsername);
+            countRepository.save(count);
+        });
+
+        // 5) Update Challenge documents (new addition)
+        List<Challenge> challenges = challengeRepository.findByUsername(oldUsername);
+        challenges.forEach(c -> c.setUsername(newUsername));
+        challengeRepository.saveAll(challenges);
 
         return ResponseEntity.ok("Username updated successfully");
     }
